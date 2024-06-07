@@ -1,12 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
+import UseState from './component/UseState';
 import './App.css';
-import UseState from './component/UseState'; 
+
+export const ToggleTheme = React.createContext();
 
 function App() {
+  const [state, setState] = useState(true);
+
+  const handleToggle = () => {
+    setState(prevState => !prevState);
+  }
+
   return (
-    <div className="App">
+    <ToggleTheme.Provider value={state}>
+      <button onClick={handleToggle}>Toggle</button>
       <UseState />
-    </div>
+    </ToggleTheme.Provider>
   );
 }
 
