@@ -1,60 +1,44 @@
-import React, { useContext, useState } from 'react';
-const ThemeContext = React.createContext();
-function ToggleButton() {
-  const [theme, setTheme] = useContext(ThemeContext);
-  const toggleTheme = () => {
-    setTheme(theme === "black" ? "grey" : "black");
+import React, { useContext, useState, useEffect } from "react";
+import { ToggleTheme } from "../App";
+
+function UseState() {
+  const theme = useContext(ToggleTheme);
+  const [count, setCount] = useState(0);
+  const [showContent, setShowContent] = useState(false);
+ 
+  useEffect(() => {
+    if (showContent) {
+      alert("Content Button is clicked");
+    }
+  }, [showContent]);
+
+  const themeStyle = {
+    backgroundColor: theme ? "black" : "grey",
+    color: theme ? "grey" : "black",
+    padding: "2rem",
+    margin: "2rem",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column"
   };
+
+  const handleCount = () => {
+    setCount(count + 1);
+  };
+
   return (
-    <div style={{ marginBottom: "20px" }}>
-      <button onClick={toggleTheme}>Toggle</button>
-    </div>
-  );
-}
-function ContentBox() {
-  const [theme] = useContext(ThemeContext);
-  const [likeCount, setLikeCount] = useState(0);
-  const [showContent, setShowContent] = useState(false); 
-  const handleContentClick = () => {
-    alert("Content button clicked");
-    setShowContent(true);
-  };
-  const handleLikeClick = () => {
-    setLikeCount(prevCount => prevCount + 1);
-  };
-  const backgroundColor = theme === "black" ? "black" : "grey";
-  return (
-    <div style={{ backgroundColor, padding: "20px", width: "1200px" }}>
+    <div style={themeStyle}>
+      <button style={{ margin: "1rem" }} onClick={() => setShowContent(prevShowContent => !prevShowContent)}> Content </button>
       {showContent && (
-        <div>
-          <p style={{ color: "white" }}>useState is a React Hook that allows functional components to manage state. useEffect is a React Hook that allows you to perform side effects in functional components. useContext is a React Hook that allows functional components to consume values from the nearest Context provider. </p>
-        </div>
+        <p>useState is a React Hook that allows functional components to manage state. useEffect is a React Hook that allows you to perform side effects in functional components. useContext is a React Hook that allows functional components to consume values from the nearest Context provider.</p>
       )}
-      <div style={{ marginBottom: "10px" }}>
-        <button onClick={handleContentClick}>Content</button>
-      </div>
-      <div style={{ marginBottom: "10px" }}>
-        <span>{likeCount}</span>
-      </div>
       <div>
-        <button onClick={handleLikeClick}>Like</button>
+        <h3>{count}</h3>
+        <button onClick={handleCount}>Like</button>
       </div>
     </div>
   );
 }
-function App() {
-  const [theme, setTheme] = useState("black");
-  return (
-    <ThemeContext.Provider value={[theme, setTheme]}>
-      <div>
-        <ToggleButton />
-        <ContentBox />
-      </div>
-    </ThemeContext.Provider>
-  );
-}
-export default App;
 
-
-
-
+export default UseState;
